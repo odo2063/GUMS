@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>settings</class>
+ <widget class="QDialog" name="settings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>511</width>
+    <height>384</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>settings</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>20</y>
+     <width>171</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Settings Burst - Surge</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>50</y>
+     <width>230</width>
+     <height>140</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Surge-Generator</string>
+   </property>
+   <widget class="QComboBox" name="comboBoxgenS">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>160</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Choose wisely ...</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QCheckBox" name="checkBoxgenS">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>90</y>
+      <width>150</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>set default adress</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditgenS">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>60</y>
+      <width>160</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>address</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="okButton">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>300</y>
+     <width>220</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>OK</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="cancelButton">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>300</y>
+     <width>220</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CANCEL</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>230</width>
+     <height>140</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Burst-Generator</string>
+   </property>
+   <widget class="QComboBox" name="comboBoxgenB">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>160</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Choose wisely ...</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QCheckBox" name="checkBoxgenB">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>90</y>
+      <width>150</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>set default adress</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditgenB">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>60</y>
+      <width>160</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>address</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>170</y>
+     <width>230</width>
+     <height>140</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Coupling Network</string>
+   </property>
+   <widget class="QComboBox" name="comboBoxcou">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>160</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Choose wisely ...</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QCheckBox" name="checkBoxcou">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>90</y>
+      <width>150</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>set default adress</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditcou">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>60</y>
+      <width>160</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>address</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
