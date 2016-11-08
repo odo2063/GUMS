@@ -24,16 +24,16 @@ class MainWindow(QtGui.QMainWindow, main):         			# Klasse mit Parametern (x
 		globalpath=str(self.comboBox.currentText()).replace(" ","\ ")
 		os.system(globalpath + "/Procedure.py " + globalpath)
 
-	
+
 	def setuseen(self):
 		if self.comboBox.currentText() ==  "choose wisely...":
 			self.checkBox.setEnabled(False)
 		else:
 			self.checkBox.setEnabled(True)
-		
-		
-		 	
-	
+
+
+
+
 if __name__ == "__main__":                            			# Programmstart
 	app = QtGui.QApplication(sys.argv)
 	main = MainWindow()                         			# Festlegung des Hauptfensters
