@@ -1,2 +1,2 @@
 # GUMS
-GNU Universal Measurement System
+Grand Universal Measurement System
