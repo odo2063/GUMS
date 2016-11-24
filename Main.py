@@ -1,5 +1,5 @@
 #!/usr/bin/python3.4
-###blub
+#blub
 import sys, glob, os
 from PyQt4 import QtCore, QtGui, uic
 from oct2py import octave
