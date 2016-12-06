@@ -8,7 +8,7 @@ set(obj1, "stopbits", 2)
 
 % RESET
 
-srl_write(obj1, char([0xB2,0x80]))
+srl_write(obj1, char([0x70,0x02]))
 
 fclose(obj1)
 
