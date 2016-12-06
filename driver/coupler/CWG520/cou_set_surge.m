@@ -1,4 +1,4 @@
-function object = cou_set_burst(adress)
+function object = cou_set_surge(adress)
 
 obj1=serial(adress, 600, 10);
 set(obj1, "bytesize", 8)
@@ -8,7 +8,7 @@ set(obj1, "stopbits", 2)
 
 % RESET
 
-srl_write(obj1, char([0x72,0x80]))
+srl_write(obj1, char([0x70,0x20]))
 
 fclose(obj1)
 

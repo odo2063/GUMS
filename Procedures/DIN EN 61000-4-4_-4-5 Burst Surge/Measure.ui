@@ -17,6 +17,9 @@
    <bool>true</bool>
   </property>
   <widget class="QGroupBox" name="groupBox_Burst">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -709,8 +712,14 @@
     <property name="text">
      <string>complete - 1Ph</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="pushButton_B">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -727,6 +736,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_S">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -746,6 +758,9 @@
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox_checkB">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -824,6 +839,9 @@
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_checkS">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>80</x>

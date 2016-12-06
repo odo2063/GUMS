@@ -26,12 +26,12 @@ class MainWindow(QtGui.QMainWindow, main):         			# Klasse mit Parametern (x
 #		self.Procedure.setStyleSheet("background-color: #ff6600")
 
 #	def setexeen(self,state):
-#		
+#
 #		if state == QtCore.Qt.Checked:
 #			self.Execution.setEnabled(True)
 #		else:
 #			self.Execution.setEnabled(False)
-#	
+#
 #	def setuseen(self):
 #		if self.comboBox.currentText() ==  "choose wisely...":
 #			self.checkBox.setEnabled(False)
@@ -43,16 +43,16 @@ class MainWindow(QtGui.QMainWindow, main):         			# Klasse mit Parametern (x
 		print (error)
 		#print str(sys.argv[1]) +"/"
 	def execmeasure(self):
-		MeasureWindow(self).exec_()	
+		MeasureWindow(self).exec_()
 
 	def execsettings(self):
 		SettingsWindow(self).exec_()			# --> zeige Messfenster exec_()=modal
-		 	
+
 
 class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer das Dialogfenster
 	def __init__(self, Fenster=None):             			# initialiesiert Dialogfenster
-		(SettingsWindow, self).__init__()      			# 
-		QtGui.QDialog.__init__(self,Fenster)  			# 
+		(SettingsWindow, self).__init__()      			#
+		QtGui.QDialog.__init__(self,Fenster)  			#
 		self.setupUi(self)                    			# Siehe Komentar z14
 		self.arsch = Fenster                  			# anlegen eines Attributs uns es in der Klasse zu verwenden
 		genBliste = glob.glob("driver/burstgenerator/*")
@@ -61,20 +61,22 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 		self.comboBoxgenS.insertItems(1,genSliste)
 		couliste = glob.glob("driver/coupler/*")
 		self.comboBoxcou.insertItems(1,couliste)
-		
+
 		self.comboBoxgenB.currentIndexChanged.connect(self.setgenBadd)
 		self.comboBoxgenS.currentIndexChanged.connect(self.setgenSadd)
 		self.comboBoxcou.currentIndexChanged.connect(self.setcouadd)
 		self.cancelButton.clicked.connect(self.close)
+		self.loadButton.clicked.connect(self.load)
+		self.saveButton.clicked.connect(self.save)
 		self.okButton.clicked.connect(self.ok)
 		self.okButton.clicked.connect(self.close)
 #		self.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addButton_druecken) # addButton --> starte Funktion
-	
+
 	def setgenBadd(self):
 		global genBaddres
 		global genBaddresfile
 		global genBdriverpath
-		
+
 		genBdriverpath = str(self.comboBoxgenB.currentText())
 		genBaddresfile = str(self.comboBoxgenB.currentText()) + "/std_address"
 		genBaddres = str(octave.fileread (genBaddresfile))
@@ -84,55 +86,70 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 		global genSaddres
 		global genSaddresfile
 		global genSdriverpath
-		
+
 		genSdriverpath = str(self.comboBoxgenS.currentText())
 		genSaddresfile = str(self.comboBoxgenS.currentText()) + "/std_address"
 		genSaddres = str(octave.fileread (genSaddresfile))
 		self.lineEditgenS.setText(genSaddres)
-		
+
 	def setcouadd(self):
 		global couaddres
 		global couaddresfile
 		global coudriverpath
-		
+
 		coudriverpath = str(self.comboBoxcou.currentText())
 		couaddresfile = str(self.comboBoxcou.currentText()) + "/std_address"
 		couaddres = str(octave.fileread (couaddresfile))
 		self.lineEditcou.setText(couaddres)
-		
+
 	def ok(self):
 
-		
 		genBaddres=self.lineEditgenB.text()
 		genSaddres=self.lineEditgenS.text()
 		couaddres=self.lineEditcou.text()
 
 		if self.checkBoxgenB.checkState() == 2:
-			
+
 			with open(genBaddresfile,"w") as text_file:
 				text_file.write(genBaddres)
-			
-			
+
 		if self.checkBoxgenS.checkState() == 2:
-			
+
 			with open(genSaddresfile,"w") as text_file:
 				text_file.write(genSaddres)
-				
+
 		if self.checkBoxcou.checkState() == 2:
-			
+
 			with open(couaddresfile,"w") as text_file:
 				text_file.write(couaddres)
-				
-				
-		#octave.push("genaddres",str(genaddres))
-		#octave.push("powaddres",str(powaddres))
+	
+	def load(self):
+		save = str(octave.fileread ("Procedures/DIN EN 61000-4-4_-4-5 Burst Surge/std_system"))
+		
+		genBdriverpath = octave.sysload(save,"1")
+		index = self.comboBoxgenB.findText(genBdriverpath)
+		self.comboBoxgenB.setCurrentIndex(index)
+		genSdriverpath = octave.sysload(save,"2")
+		index = self.comboBoxgenS.findText(genSdriverpath)
+		self.comboBoxgenS.setCurrentIndex(index)
+		coudriverpath = octave.sysload(save,"3")
+		index = self.comboBoxcou.findText(coudriverpath)
+		self.comboBoxcou.setCurrentIndex(index)
+		
+	def save(self):
+		
+		save = "#" + genBdriverpath + "#" + genSdriverpath + "#" + coudriverpath
+		with open("Procedures/DIN EN 61000-4-4_-4-5 Burst Surge/std_system","w") as text_file:
+			text_file.write(save)
 		
 
-		
+		#octave.push("genaddres",str(genaddres))
+		#octave.push("powaddres",str(powaddres))
+
 class MeasureWindow(QtGui.QDialog, measure):           			# neue Klasse fuer das Dialogfenster
 	def __init__(self, Fenster2=None):             			# initialiesiert Dialogfenster
-		(MeasureWindow, self).__init__()      			# 
-		QtGui.QDialog.__init__(self,Fenster2)  			# 
+		(MeasureWindow, self).__init__()      			#
+		QtGui.QDialog.__init__(self,Fenster2)  			#
 		self.setupUi(self)                    			# Siehe Komentar z14
 		self.arsch2 = Fenster2
 		self.pushButtonStart.clicked.connect(self.procedure)
@@ -163,53 +180,95 @@ class MeasureWindow(QtGui.QDialog, measure):           			# neue Klasse fuer das
 		self.checkBox_BN.toggled.connect(self.enable)
 		self.checkBox_BPE.pressed.connect(self.BPE)
 		self.checkBox_BPE.toggled.connect(self.enable)
-		
+
 	def procedure(self):
-
-		BVol = str(self.lineEdit_BV.text())
-		BFreq = str(self.comboBox_BF.currentText())
-		BDur = str(self.lineEdit_BD.text())
-		BPeriod = str(self.lineEdit_BP.text())
-		SVol = str(self.lineEdit_SV.text())
-		SAng = str(self.comboBox_SA.currentText())
-		SNum = str(self.lineEdit_SN.text())
-		SDur = str(self.lineEdit_SD.text())
-#		BVol, BFreq, BDur, BPeriod, SVol, SAng, SNum, SDur, 
+		if self.pushButton_IO.isChecked() == True:
+			BVStart = 1
+		else:
+			BVStart = 2
+	
+		if self.checkBox_com1.isChecked() == True:
+			complete = 2
+		elif self.checkBox_com3.isChecked() == True:
+			complete = 8
+		else:
+			complete = 0
 		
+		B = S = 0
+		if self.checkBox_BL1.isChecked() == True:
+			B = B + 1
+		if self.checkBox_BL2.isChecked() == True:
+			B = B + 2
+		if self.checkBox_BL3.isChecked() == True:
+			B = B + 4
+		if self.checkBox_BN.isChecked() == True:
+			B = B + 8
+		if self.checkBox_BPE.isChecked() == True:
+			B = B + 16
+		if self.checkBox_SL1.isChecked() == True:
+			S = S + 1
+		if self.checkBox_SL2.isChecked() == True:
+			S = S + 2
+		if self.checkBox_SL3.isChecked() == True:
+			S = S + 4
+		if self.checkBox_SN.isChecked() == True:
+			S = S + 8
+		
+		try:
+			BVol = float(self.lineEdit_BV.text())
+		except ValueError:
+			BVol = 0
+		BFreq = int(self.comboBox_BF.currentText())
+		BDur = float(self.lineEdit_BD.text())
+		BPeriod = int(self.lineEdit_BP.text())
+		try:
+			SVol = float(self.lineEdit_SV.text())
+		except ValueError:
+			SVol = 0
+		SAng = int(self.comboBox_SA.currentText())
+		SNum = int(self.lineEdit_SN.text())
+		SDur = int(self.lineEdit_SD.text())
+
 		octave.addpath(str(sys.argv[1]) +"/")
-		error = octave.procedure(genBaddres, genSaddres, couaddres)
-		print (error)	
-
+		error = octave.procedure(genBaddres, genSaddres, couaddres, BVol, BFreq, BDur, BPeriod, SVol, SAng, SNum, SDur, B, S, complete, BVStart)
+		print (error)
+	
 	def enable(self):
-		
+
 		a = str('')
-		b = str(self.lineEdit_BV.text())
-		c = str(self.lineEdit_SV.text())
+		if self.groupBox_Burst.isEnabled() == True:
+			b = str(self.lineEdit_BV.text())
+		else: 
+			b = str('0')
+		if self.groupBox_Surge.isEnabled() == True:
+			c = str(self.lineEdit_SV.text())
+		else:
+			c = str('0')
 		d = str(self.lineEdit_BP.text())
 		e = str(self.lineEdit_SN.text())
 		f = str(self.lineEdit_SD.text())
-		
+
 		if (self.checkBox_BL1.isChecked() == True or self.checkBox_BL2.isChecked() == True or self.checkBox_BL3.isChecked() == True or self.checkBox_BN.isChecked() == True or self.checkBox_BPE.isChecked() == True):
 			g = str('1')
 		else:
 			g = str('')
-				
+
 		if (self.checkBox_SL1.isChecked() == True or self.checkBox_SL2.isChecked() == True or self.checkBox_SL3.isChecked() == True or self.checkBox_SN.isChecked() == True):
 			h = str('1')
 		else:
 			h = str('')
-		
+
 		if self.pushButton_B.isChecked() == True:
 			if g == '1':
 				x = str('1')
 			else:
 				x = str('')
-		else:	
+		else:
 			if (g == '1' and h == '1'):
 				x = str('1')
 			else:
 				x = str('')
-			
+
 		if self.pushButton_Supply.isChecked() == True:
 			if (self.checkBox_com1.isChecked() == True or self.checkBox_com3.isChecked() == True):
 				if (a is not b and a is not c and a is not d and a is not e and a is not f):
@@ -232,8 +291,8 @@ class MeasureWindow(QtGui.QDialog, measure):           			# neue Klasse fuer das
 					self.pushButtonStart.setEnabled(True)
 				else:
 					self.pushButtonStart.setEnabled(False)
-			
-		
+
+
 	def burstvoltage(self):
 		if self.comboBox_BV.currentText() ==  "Class 1":
 			self.lineEdit_BV.setEnabled(False)
@@ -266,7 +325,7 @@ class MeasureWindow(QtGui.QDialog, measure):           			# neue Klasse fuer das
 			self.lineEdit_BV.setEnabled(False)
 			self.lineEdit_BV.setText('')
 		self.enable()
-			
+
 	def surgevoltage(self):
 		if self.comboBox_SV.currentText() ==  "Class 1":
 			self.lineEdit_SV.setEnabled(False)
@@ -287,14 +346,14 @@ class MeasureWindow(QtGui.QDialog, measure):           			# neue Klasse fuer das
 			self.lineEdit_SV.setEnabled(False)
 			self.lineEdit_SV.setText('')
 		self.enable()
-	
+
 	def burstfrequency(self):
 		if self.comboBox_BF.currentText() == "5":
 			self.lineEdit_BD.setText('15')
-		else: 
+		else:
 			self.lineEdit_BD.setText('0.75')
 		self.enable()
-		
+
 	def complete1(self):
 
 		if self.checkBox_com1.isChecked() == True:
@@ -303,41 +362,61 @@ class MeasureWindow(QtGui.QDialog, measure):           			# neue Klasse fuer das
 			self.pushButton_B.setEnabled(False)
 			self.groupBox_checkS.setEnabled(False)
 			self.groupBox_checkB.setEnabled(False)
+			self.groupBox_Burst.setEnabled(True)
+			self.burstvoltage()
+			if self.pushButton_IO.isChecked() == False:
+				self.groupBox_Surge.setEnabled(True)
+				self.surgevoltage()
 		else:
 			self.pushButton_S.setEnabled(True)
 			self.pushButton_B.setEnabled(True)
 			self.groupBox_checkB.setEnabled(True)
 			if self.pushButton_S.isChecked() == True:
-				self.groupBox_checkS.setEnabled(True)
+				self.surge()
+			else:
+				self.burst()
+#				self.groupBox_checkS.setEnabled(True)
 		self.enable()
-		
+
 	def complete3(self):
 
 		if self.checkBox_com3.isChecked() == True:
 			self.checkBox_com1.setChecked(False)
 			self.pushButton_S.setEnabled(False)
 			self.pushButton_B.setEnabled(False)
-			self.groupBox_checkS.setEnabled(False)
 			self.groupBox_checkB.setEnabled(False)
+			self.groupBox_checkS.setEnabled(False)
+			self.groupBox_Burst.setEnabled(True)
+			self.burstvoltage()
+			if self.pushButton_IO.isChecked() == False:
+				self.groupBox_Surge.setEnabled(True)
+				self.surgevoltage()
 		else:
-			self.pushButton_S.setEnabled(True)
 			self.pushButton_B.setEnabled(True)
+			self.pushButton_S.setEnabled(True)
 			self.groupBox_checkB.setEnabled(True)
 			if self.pushButton_S.isChecked() == True:
-				self.groupBox_checkS.setEnabled(True)
+				self.surge()
+			else:
+				self.burst()
+#				self.groupBox_checkS.setEnabled(True)
 		self.enable()
-		
+
 	def burst(self):
-	
+
 		if self.pushButton_B.isChecked() == False:
 			self.pushButton_B.setChecked(True)
 		else:
 			self.pushButton_S.setChecked(False)
 			self.groupBox_checkS.setEnabled(False)
+			self.groupBox_Burst.setEnabled(True)
+			self.groupBox_Surge.setEnabled(False)
+			self.lineEdit_SV.setText('')
+			self.burstvoltage()
 		self.enable()
-		
+
 	def surge(self):
-	
+
 		if self.pushButton_S.isChecked() == False:
 			self.pushButton_S.setChecked(True)
 		else:
@@ -348,104 +427,118 @@ class MeasureWindow(QtGui.QDialog, measure):           			# neue Klasse fuer das
 			self.checkBox_BL3.setChecked(False)
 			self.checkBox_BN.setChecked(False)
 			self.checkBox_BPE.setChecked(False)
+			self.groupBox_Surge.setEnabled(True)
+			self.groupBox_Burst.setEnabled(False)
+			self.lineEdit_BV.setText('')
+			self.surgevoltage()
 		self.enable()
-		
+
 	def supply(self):
-	
+
 		if self.pushButton_Supply.isChecked() == False:
 			self.pushButton_Supply.setChecked(True)
 		else:
 			self.pushButton_IO.setChecked(False)
-			self.groupBox_Surge.setEnabled(True)
-		
+			if self.checkBox_com1.isChecked() == False and self.checkBox_com3.isChecked() == False:
+				self.pushButton_S.setEnabled(True)
+				if self.pushButton_B.isChecked() == True:
+					self.burst()
+				else:
+					self.surge()
+			else:
+				self.groupBox_Surge.setEnabled(True)
+		if self.groupBox_Surge.isEnabled() == True:
+			self.surgevoltage()
 		self.burstvoltage()
-	
+
 	def io(self):
-	
+
+		self.lineEdit_SV.setText('')
 		if self.pushButton_IO.isChecked() == False:
 			self.pushButton_IO.setChecked(True)
 		else:
 			self.pushButton_Supply.setChecked(False)
 			self.groupBox_Surge.setEnabled(False)
-			
-		self.burstvoltage()
-	
+			self.pushButton_S.setEnabled(False)
+			self.burstvoltage()
+			self.pushButton_B.setChecked(True)
+		self.burst()
+
 	def SL1(self):
-		
+
 		self.checkBox_BL1.setChecked(False)
 		self.checkBox_SL2.setChecked(False)
 		self.checkBox_SL3.setChecked(False)
 		self.checkBox_SN.setChecked(False)
-		
+
 	def SL2(self):
-		
+
 		self.checkBox_SL1.setChecked(False)
 		self.checkBox_BL2.setChecked(False)
 		self.checkBox_SL3.setChecked(False)
 		self.checkBox_SN.setChecked(False)
-		
+
 	def SL3(self):
-		
+
 		self.checkBox_SL1.setChecked(False)
 		self.checkBox_SL2.setChecked(False)
 		self.checkBox_BL3.setChecked(False)
 		self.checkBox_SN.setChecked(False)
-		
+
 	def SN(self):
-		
+
 		self.checkBox_SL1.setChecked(False)
 		self.checkBox_SL2.setChecked(False)
 		self.checkBox_SL3.setChecked(False)
 		self.checkBox_BN.setChecked(False)
-		
+
 	def BL1(self):
-		
+
 		if self.pushButton_S.isChecked() == True:
 			self.checkBox_SL1.setChecked(False)
 			self.checkBox_BL2.setChecked(False)
 			self.checkBox_BL3.setChecked(False)
 			self.checkBox_BN.setChecked(False)
 			self.checkBox_BPE.setChecked(False)
-		
+
 	def BL2(self):
-		
+
 		if self.pushButton_S.isChecked() == True:
 			self.checkBox_BL1.setChecked(False)
 			self.checkBox_SL2.setChecked(False)
 			self.checkBox_BL3.setChecked(False)
 			self.checkBox_BN.setChecked(False)
 			self.checkBox_BPE.setChecked(False)
-		
+
 	def BL3(self):
-		
+
 		if self.pushButton_S.isChecked() == True:
 			self.checkBox_BL1.setChecked(False)
 			self.checkBox_BL2.setChecked(False)
 			self.checkBox_SL3.setChecked(False)
 			self.checkBox_BN.setChecked(False)
 			self.checkBox_BPE.setChecked(False)
-		
+
 	def BN(self):
-		
+
 		if self.pushButton_S.isChecked() == True:
 			self.checkBox_BL1.setChecked(False)
 			self.checkBox_BL2.setChecked(False)
 			self.checkBox_BL3.setChecked(False)
 			self.checkBox_SN.setChecked(False)
 			self.checkBox_BPE.setChecked(False)
-		
+
 	def BPE(self):
-		
+
 		if self.pushButton_S.isChecked() == True:
 			self.checkBox_BL1.setChecked(False)
 			self.checkBox_BL2.setChecked(False)
 			self.checkBox_BL3.setChecked(False)
 			self.checkBox_BN.setChecked(False)
-	
+
 
 if __name__ == "__main__":                            			# Programmstart
 	app = QtGui.QApplication(sys.argv)
 	main = MainWindow()                         			# Festlegung des Hauptfensters
 	main.show()                                   			# oeffnen des Hauptfensters
 	sys.exit(app.exec_())
-
