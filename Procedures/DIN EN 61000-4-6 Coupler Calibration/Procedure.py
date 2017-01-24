@@ -41,8 +41,11 @@ class MainWindow(QtGui.QMainWindow, main):         			# Klasse mit Parametern (x
 	def initialisation(self):
 		
 		octave.addpath(str(sys.argv[1]) +"/")
+		##veränderung -> connecting...
 		error = octave.init(genaddres, gendriverpath, powaddres, powdriverpath)
-		#print str(sys.argv[1]) +"/"
+		##freigeben measureButton; veränderung -> connected
+		self.measureButton.setEnabled(True)
+		
 	def execmeasure(self):
 		MeasureWindow(self).exec_()	
 
@@ -64,6 +67,8 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 		self.comboBoxgen.currentIndexChanged.connect(self.setgenadd)
 		self.comboBoxpow.currentIndexChanged.connect(self.setpowadd)
 		self.cancelButton.clicked.connect(self.close)
+		self.loadButton.clicked.connect(self.load)
+		self.saveButton.clicked.connect(self.save)
 		self.okButton.clicked.connect(self.ok)
 		self.okButton.clicked.connect(self.close)
 #		self.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addButton_druecken) # addButton --> starte Funktion
@@ -77,6 +82,7 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 		genaddresfile = str(self.comboBoxgen.currentText()) + "/std_address"
 		genaddres = str(octave.fileread (genaddresfile))
 		self.lineEditgen.setText(genaddres)
+		self.connectenable()
 
 	def setpowadd(self):
 		global powaddres
@@ -87,6 +93,7 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 		powaddresfile = str(self.comboBoxpow.currentText()) + "/std_address"
 		powaddres = str(octave.fileread (powaddresfile))
 		self.lineEditpow.setText(powaddres)
+		self.connectenable()
 		
 	def ok(self):
 		
@@ -104,9 +111,36 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 			with open(powaddresfile,"w") as text_file:
 				text_file.write(powaddres)
 				
+		self.parent().connectButton.setEnabled(True)
+		
+	def save(self):
+		
+		save = "#" + gendriverpath + "#" + powdriverpath
+		with open("Procedures/DIN EN 61000-4-4_-4-5 Burst Surge/std_system","w") as text_file:
+			text_file.write(save)
+	
+	def load(self):
+		save = str(octave.fileread ("Procedures/DIN EN 61000-4-4_-4-5 Burst Surge/std_system"))
+		
+		gendriverpath = octave.sysload(save,"1")
+		index = self.comboBoxgen.findText(gendriverpath)
+		self.comboBoxgen.setCurrentIndex(index)
+		powdriverpath = octave.sysload(save,"2")
+		index = self.comboBoxpow.findText(powdriverpath)
+		self.comboBoxpow.setCurrentIndex(index)
+		self.connectenable()
+				
 				
 		#octave.push("genaddres",str(genaddres))
 		#octave.push("powaddres",str(powaddres))
+		
+	def connectenable(self):
+	
+		cw =  "Choose wisely ..."
+		if ((self.comboBoxgen.currentText() == cw) or (self.comboBoxpow.currentText() == cw)):
+			self.okButton.setEnabled(False)
+		else:
+			self.okButton.setEnabled(True)
 		
 
 		

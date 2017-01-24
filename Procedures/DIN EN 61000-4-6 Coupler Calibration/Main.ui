@@ -55,6 +55,9 @@
      </property>
     </widget>
     <widget class="QPushButton" name="connectButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -71,6 +74,9 @@
      </property>
     </widget>
     <widget class="QPushButton" name="measureButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>20</x>

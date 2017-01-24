@@ -41,6 +41,7 @@ class MainWindow(QtGui.QMainWindow, main):         			# Klasse mit Parametern (x
 		octave.addpath(str(sys.argv[1]) +"/")
 		error = octave.init(genBaddres, genBdriverpath, genSaddres, genSdriverpath, couaddres, coudriverpath)
 		print (error)
+		self.measureButton.setEnabled(True)
 		#print str(sys.argv[1]) +"/"
 	def execmeasure(self):
 		MeasureWindow(self).exec_()
@@ -81,6 +82,7 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 		genBaddresfile = str(self.comboBoxgenB.currentText()) + "/std_address"
 		genBaddres = str(octave.fileread (genBaddresfile))
 		self.lineEditgenB.setText(genBaddres)
+		self.connectenable()
 
 	def setgenSadd(self):
 		global genSaddres
@@ -91,6 +93,7 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 		genSaddresfile = str(self.comboBoxgenS.currentText()) + "/std_address"
 		genSaddres = str(octave.fileread (genSaddresfile))
 		self.lineEditgenS.setText(genSaddres)
+		self.connectenable()
 
 	def setcouadd(self):
 		global couaddres
@@ -101,6 +104,7 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 		couaddresfile = str(self.comboBoxcou.currentText()) + "/std_address"
 		couaddres = str(octave.fileread (couaddresfile))
 		self.lineEditcou.setText(couaddres)
+		self.connectenable()
 
 	def ok(self):
 
@@ -122,6 +126,8 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 
 			with open(couaddresfile,"w") as text_file:
 				text_file.write(couaddres)
+		
+		self.parent().connectButton.setEnabled(True)
 	
 	def load(self):
 		save = str(octave.fileread ("Procedures/DIN EN 61000-4-4_-4-5 Burst Surge/std_system"))
@@ -135,6 +141,7 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 		coudriverpath = octave.sysload(save,"3")
 		index = self.comboBoxcou.findText(coudriverpath)
 		self.comboBoxcou.setCurrentIndex(index)
+		self.connectenable()
 		
 	def save(self):
 		
@@ -145,7 +152,14 @@ class SettingsWindow(QtGui.QDialog, settings):           			# neue Klasse fuer d
 
 		#octave.push("genaddres",str(genaddres))
 		#octave.push("powaddres",str(powaddres))
-
+	def connectenable(self):
+	
+		cw =  "Choose wisely ..."
+		if ((self.comboBoxgenB.currentText() == cw) or (self.comboBoxgenS.currentText() == cw) or (self.comboBoxcou.currentText() == cw)):
+			self.okButton.setEnabled(False)
+		else:
+			self.okButton.setEnabled(True)
+		
 class MeasureWindow(QtGui.QDialog, measure):           			# neue Klasse fuer das Dialogfenster
 	def __init__(self, Fenster2=None):             			# initialiesiert Dialogfenster
 		(MeasureWindow, self).__init__()      			#

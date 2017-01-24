@@ -2,7 +2,7 @@
 
 import sys, glob, os
 from PyQt4 import QtCore, QtGui, uic
-from oct2py import octave
+#from oct2py import octave
 
 main = uic.loadUiType("Checker.ui")[0]                  			# Uebergabe UI Main an Haupt (Name frei waehlbar)
 
@@ -19,6 +19,7 @@ class MainWindow(QtGui.QMainWindow, main):         			# Klasse mit Parametern (x
 		QtCore.QTimer.singleShot(int(float(sys.argv[1])*1000),lambda: app.exit(a))
 		
 	def failpressed(self):
+		global a
 		a = 1
 	def stoppressed(self):
 		a = 2
